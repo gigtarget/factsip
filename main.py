@@ -2,10 +2,13 @@
 
 import schedule
 import time
-from post_to_instagram import post_to_instagram
-from create_post import create_fact_image
 from quote_generator import get_daily_tip
+from create_post import create_fact_image
+from post_to_instagram import post_to_instagram
 from telegram_alert import send_telegram_alert
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def run_bot():
     try:
@@ -13,15 +16,21 @@ def run_bot():
         image_path = create_fact_image(tip_data)
         post_to_instagram(image_path, tip_data['caption'])
         send_telegram_alert(f"✅ Posted: {tip_data['goal']}")
+        print("✅ Post successful:", tip_data["goal"])
     except Exception as e:
-        send_telegram_alert(f"❌ Failed to post: {str(e)}")
+        error_msg = f"❌ Bot failed: {str(e)}"
+        print(error_msg)
+        send_telegram_alert(error_msg)
 
-# Run every day at 8:00 AM UTC (adjust as needed)
-schedule.every().day.at("19:07").do(run_bot)  # 7:00 PM UTC
+# Schedule posts 3 times a day (UTC)
+schedule.every().day.at("19:12").do(run_bot)
+schedule.every().day.at("13:00").do(run_bot)
+schedule.every().day.at("18:00").do(run_bot)
+
+print("🔄 FactSip bot running. Waiting for scheduled times...")
 
 if __name__ == "__main__":
-    print("🚀 FactSip bot started...")
-    run_bot()
+    run_bot()  # Run immediately once
     while True:
         schedule.run_pending()
-        time.sleep(60)
+        time.sleep(30)
