@@ -23,7 +23,7 @@ def run_bot():
         send_telegram_alert(error_msg)
 
 # Schedule posts 3 times a day (UTC)
-schedule.every().day.at("19:21").do(run_bot)
+schedule.every().day.at("19:29").do(run_bot)
 schedule.every().day.at("13:00").do(run_bot)
 schedule.every().day.at("18:00").do(run_bot)
 
