@@ -17,7 +17,7 @@ def run_bot():
         send_telegram_alert(f"❌ Failed to post: {str(e)}")
 
 # Run every day at 8:00 AM UTC (adjust as needed)
-schedule.every().day.at("19:00").do(run_bot)
+schedule.every().day.at("19:00\5").do(run_bot)
 
 if __name__ == "__main__":
     print("🚀 FactSip bot started...")
