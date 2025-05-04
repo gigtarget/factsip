@@ -1,7 +1,10 @@
+# quote_generator.py
+
 import openai
 import os
+import json
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 def get_daily_tip():
     prompt = """
@@ -21,19 +24,18 @@ Generate a daily health tip in the following JSON format:
 Keep the tone helpful, simple, goal-oriented. Use emojis in tips and 4–6 hashtags in caption.
 """
 
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-4",
         messages=[
-            { "role": "system", "content": "You are a nutrition coach who creates bite-sized Instagram health tips." },
-            { "role": "user", "content": prompt }
+            {"role": "system", "content": "You are a nutrition coach who creates bite-sized Instagram health tips."},
+            {"role": "user", "content": prompt}
         ],
-        temperature=0.8
+        temperature=0.9
     )
 
-    output = response["choices"][0]["message"]["content"]
+    output = response.choices[0].message.content.strip()
 
     try:
-        import json
         return json.loads(output)
     except Exception as e:
-        raise ValueError("Failed to parse GPT response. Error: " + str(e) + "\n\nResponse:\n" + output)
+        raise ValueError("Failed to parse GPT response:\n" + output)
