@@ -6,7 +6,7 @@ import datetime
 import textwrap
 
 def create_fact_image(tip_data):
-    WIDTH, HEIGHT = 1080, 1080
+    WIDTH, HEIGHT = 1080, 1350
     BG_COLOR = "#fef9f4"
     BOX_COLOR = "#ffffff"
     TITLE_COLOR = "#2b9348"
